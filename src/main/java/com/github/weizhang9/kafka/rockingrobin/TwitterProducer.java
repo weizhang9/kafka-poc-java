@@ -47,8 +47,6 @@ public class TwitterProducer {
             } catch (InterruptedException e) {
                 e.getCause();
                 hosebirdClient.stop();
-            } finally {
-                producer.close();
             }
 
             if (msg != null) {
@@ -56,6 +54,8 @@ public class TwitterProducer {
                 producer.send(createProducerRecord("twitter_tweets", msg, null), (recordMetadata, e) -> {
                     if (e != null) {
                         logger.error("😬", e);
+                    } else {
+                        logger.info(recordMetaInfo(recordMetadata));
                     }
                 });
             }
